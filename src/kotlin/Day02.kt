@@ -1,15 +1,60 @@
 fun main() {
-    val testInput = readInput("Day01_test").map { it.toInt() }
-    val input = readInput("day01").map { it.toInt() }
+    val testInput = readInput("Day02_test")
+    val input = readInput("day02")
 
-    fun logic1(input: List<Int>): Int {
-        return input.size
+    fun logic1(input: List<String>): Int {
+        var height = 0
+        var depth = 0
+
+        for (course in input) {
+            val splitString = course.split(" ")
+            val direction = splitString[0]
+            val metric = splitString[1].toInt()
+            when (direction) {
+                "up" -> depth -= metric
+                "down" -> depth += metric
+                "forward" -> height += metric
+            }
+        }
+
+        return height * depth
     }
 
-    fun logic2(input: List<Int>): Int {
-        return input.size
+    fun logic2(input: List<String>): Int {
+        var height = 0
+        var depth = 0
+        var aim = 0
+
+        for (course in input) {
+            val splitString = course.split(" ")
+            val direction = splitString[0]
+            val metric = splitString[1].toInt()
+            when (direction) {
+                "up" -> aim -= metric
+                "down" -> aim += metric
+                "forward" -> {
+                    height += metric
+                    depth += aim * metric
+                }
+            }
+        }
+
+        return height * depth
     }
 
-    println(logic1(testInput))
-    println(logic2(testInput))
+    println(logic1(input))
+    println(logic2(input))
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
