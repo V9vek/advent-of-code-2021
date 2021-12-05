@@ -71,6 +71,8 @@ fun main() {
 
     println(logic1(input))
     println(logic2(input))
+
+    println("A".toInt(radix = 16))
 }
 
 
