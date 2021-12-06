@@ -38,6 +38,7 @@ fun main() {
             }
             println()
         }
+        println("----------------------")
     }
 
     fun findNumberOfOverlappingLines(matrix: Array<IntArray>): Int {
@@ -56,6 +57,7 @@ fun main() {
         val matrix = getMaxSizeMatrix()
 
         lineSegmentsList.forEachIndexed { i, ls ->
+            println("line: $ls")
             if (ls.p1.x == ls.p2.x) {
                 val x = ls.p1.x
                 var startY = ls.p1.y
@@ -91,9 +93,68 @@ fun main() {
     }
 
     fun logic2(input: List<String>): Int {
-        return input.size
+        val lineSegmentsList = getLineSegmentsList(input)
+        val matrix = getMaxSizeMatrix()
+
+        lineSegmentsList.forEachIndexed { i, ls ->
+            if (ls.p1.x == ls.p2.x) {
+                val x = ls.p1.x
+                var startY = ls.p1.y
+                var endY = ls.p2.y
+                val diff = startY - endY
+                if (diff > 0) {
+                    startY = ls.p2.y
+                    endY = ls.p1.y
+                }
+//                println("X = $x, startY = $startY, endY = $endY")
+                for (j in startY..endY) {
+                    matrix[j][x] += 1
+                }
+//                printMatrix(matrix)
+            } else if (ls.p1.y == ls.p2.y) {
+                val y = ls.p1.y
+                var startX = ls.p1.x
+                var endX = ls.p2.x
+                val diff = startX - endX
+                if (diff > 0) {
+                    startX = ls.p2.x
+                    endX = ls.p1.x
+                }
+//                println("startX = $startX, endX = $endX, Y = $y")
+                for (j in startX..endX) {
+                    matrix[y][j] += 1
+                }
+//                printMatrix(matrix)
+            } else {
+                val startX = ls.p1.x
+                var startY = ls.p1.y
+                val endX = ls.p2.x
+                val endY = ls.p2.y
+
+                if (startX > endX && startY > endY) {
+                    for (j in startX downTo endX) {
+                        matrix[startY--][j] += 1
+                    }
+                } else if (startX > endX && startY < endY) {
+                    for (j in startX downTo endX) {
+                        matrix[startY++][j] += 1
+                    }
+                } else if (startX < endX && startY > endY) {
+                    for (j in startX..endX) {
+                        matrix[startY--][j] += 1
+                    }
+                } else if (startX < endX && startY < endY) {
+                    for (j in startX..endX) {
+                        matrix[startY++][j] += 1
+                    }
+                }
+//                printMatrix(matrix)
+            }
+        }
+
+        return findNumberOfOverlappingLines(matrix)
     }
 
     println(logic1(input))
-    println(logic2(testInput))
+    println(logic2(input))
 }
